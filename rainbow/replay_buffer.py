@@ -198,7 +198,9 @@ class ReplayBuffer(object):
         """
         idxes = [random.randint(0, len(self._storage) - 1) for _ in range(batch_size)]
         return self._encode_sample(idxes)
-        
+
+
+#PER
 class PrioritizedReplayBuffer(ReplayBuffer):
     def __init__(self, size, alpha):
         """Create Prioritized Replay buffer.
