@@ -224,6 +224,8 @@ class PrioritizedReplayBuffer(ReplayBuffer):
         while it_capacity < size:
             it_capacity *= 2
 
+        #segment tree 사용하는 이유는 td error의 총합으로 prior를 정하기 때문.
+        #segment tree 이용시 빠르게 접근 가능. O(log(N))
         self._it_sum = SumSegmentTree(it_capacity)
         self._it_min = MinSegmentTree(it_capacity)
         self._max_priority = 1.0
