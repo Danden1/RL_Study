@@ -32,6 +32,8 @@ Prioritized Replay는  bias를 가져오는데, 주로 expectation에 대한 분
 
 beta 는 hyperparameter이다.
 
+코드에는 적용하지 않았다.
+
 ### NoisyNet
 
 
@@ -70,4 +72,17 @@ rainbow에서는 l2 projection을 이용한다고 되어있다.
 
 ![6](./6.PNG)
 
-알고리즘은 위와 같다(C51).
+
+
+
+### 실습
+
+주피터 노트북으로 실습을 하였다. 게임은 spadeinvader 이다. state는 rgb image를 grayscale 80x80의 크기은 이미지로 변환하여 state로 넘겨주었다. 그리고 normalize(0,255) 를 해주었다.
+
+pytorch 공식 사이트의 슈퍼마리오 예제도 이러한 방식으로 state를 다루어서 잘될 줄 알았지만, episode가 늘어나도 reward는 늘어나지 않았다.
+
+다른 사람들의 코드를 보고 문저점을 좀 찾아봐야 할 것 같다.
+
+https://github.com/higgsfield/RL-Adventure/blob/master/7.rainbow%20dqn.ipynb
+
+이 코드를 참조하였다.

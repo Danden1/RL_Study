@@ -5,10 +5,10 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 class NoisyLinear(nn.Module):
-    def __init__(self, in_features, out_features, use_cuda, std_init = 0.4):
+    def __init__(self, in_features, out_features, device, std_init = 0.4):
         super(NoisyLinear,self).__init__()
         
-        self.use_cuda = use_cuda
+        self.device = device
         self.in_features = in_features
         self.out_features = out_features
         self.std_init = std_init
@@ -25,15 +25,11 @@ class NoisyLinear(nn.Module):
         self.reset_noise()
 
     def forward(self,x):
-        if self.use_cuda:
-            weight_epsilon = self.weight_epsilon.cuda()
-            bais_epsilon = self.bias_epsilon.cuda()
-        else:
-            weight_epsilon = self.weight_epsilon
-            bias_epsilon = self.bias_epsilon
+        weight_epsilon = self.weight_epsilon.to(device=self.device)
+        bias_epsilon = self.bias_epsilon.to(device=self.device)
         
         if self.training:
-            weight = self.weight_mu + self.wieght_sigma.mul(Variable(weight_epsilon))
+            weight = self.weight_mu + self.weight_sigma.mul(Variable(weight_epsilon))
             bias = self.bias_mu + self.bias_sigma.mul(Variable(bias_epsilon))
 
         else:
@@ -56,7 +52,7 @@ class NoisyLinear(nn.Module):
         epsilon_out = self._scale_noise(self.out_features)
 
         #sgn(x)
-        self.weight_epsiolon.copy_(epsilon_out.ger(epsilon_in))
+        self.weight_epsilon.copy_(epsilon_out.ger(epsilon_in))
         self.bias_epsilon.copy_(self._scale_noise(self.out_features))
 
     def _scale_noise(self,size):
